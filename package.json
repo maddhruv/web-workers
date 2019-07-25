@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/maddhruv/web-workers/issues"
   },
-  "homepage": "https://github.com/maddhruv/web-workers#readme"
+  "homepage": "https://github.com/maddhruv/web-workers#readme",
+  "devDependencies": {
+    "standard": "^13.1.0"
+  }
 }
