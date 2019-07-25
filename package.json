@@ -19,5 +19,8 @@
   "homepage": "https://github.com/maddhruv/web-workers#readme",
   "devDependencies": {
     "standard": "^13.1.0"
+  },
+  "dependencies": {
+    "check-web-workers-support": "0.0.2"
   }
 }

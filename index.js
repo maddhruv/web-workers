@@ -1,5 +1,10 @@
+const CheckWebWorker = require('check-web-workers-support')
 class WebWorker {
   constructor (script) {
+    CheckWebWorker(() => {
+      console.log('Web Workers are supported')
+    })
+
     if (!script) {
       throw new Error('The script is required')
     }
