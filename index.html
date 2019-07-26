@@ -1,0 +1,22 @@
+<html>
+  <head></head>
+  <body>
+    <script src="./dist.js"></script>
+    <script>
+      const fxn = function () {
+        console.log('Inside the Worker')
+        onmessage = (e) => console.log(e)
+      }
+      const worker = new WebWorker(fxn)
+      worker.message('Hello')
+      worker.append(' World')
+      worker.clearMessage()
+      worker.message('Hey')
+      worker.postMessage()
+      worker.send('Bravo')
+      worker.send({
+        message: 'g'
+      }) // should throw an error
+    </script>
+  </body>
+</html>

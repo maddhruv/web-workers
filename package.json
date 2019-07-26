@@ -2,8 +2,10 @@
   "name": "web-workers",
   "version": "0.2.0",
   "description": "Web Workers Kit",
-  "main": "index.js",
+  "main": "dist.js",
   "scripts": {
+    "build": "rollup index.js --file dist.js --format iife --name 'WebWorker'",
+    "watch": "rollup index.js --file dist.js --format iife --name 'WebWorker' --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,9 +20,7 @@
   },
   "homepage": "https://github.com/maddhruv/web-workers#readme",
   "devDependencies": {
+    "rollup": "^1.17.0",
     "standard": "^13.1.0"
-  },
-  "dependencies": {
-    "check-web-workers-support": "0.0.2"
   }
 }
