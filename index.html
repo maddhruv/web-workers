@@ -14,9 +14,10 @@
       worker.message('Hey')
       worker.postMessage()
       worker.send('Bravo')
-      worker.send({
-        message: 'g'
-      }) // should throw an error
+      const msgWorker = new WebWorker(fxn, {
+        message: 'Default Message'
+      })
+      msgWorker.postMessage()
     </script>
   </body>
 </html>

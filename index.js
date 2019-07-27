@@ -1,12 +1,14 @@
-function WebWorker (script) {
+function WebWorker (script, options) {
+  this._options = options || {}
   if (!script) {
     throw new Error('The script is required in `new WebWorker()`')
   }
-  this._message = null
+  this._message = this._options.message || null
   this._script = script
-  const code = this._script.toString()
-  const blob = new Blob(['(' + code + ')()'])
-  this._worker = new Worker(URL.createObjectURL(blob))
+  this._code = this._script.toString()
+  const blob = new Blob(['(' + this._code + ')()'])
+  this._url = URL.createObjectURL(blob)
+  this._worker = new Worker(this._url)
 }
 
 WebWorker.prototype.send = function (message) {
