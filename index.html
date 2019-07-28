@@ -3,22 +3,27 @@
   <body>
     <script src="./dist.js"></script>
     <script>
-      const fxn = function () {
-        console.log('inside the worker')
+      const mathematics = () => {
         function add (a, b) {
-          console.log('add', a+b)
+          console.log(a+b)
         }
+
         const subtract = (a, b) => {
-          console.log('sub', a-b)
+          console.log(a-b)
         }
-        let division = function (a, b) {
-          console.log('div', a/b)
+
+        const division = function (a, b) {
+          console.log(a/b)
         }
       }
-      const worker = new WebWorker(fxn)
-      worker.add(1, 2)
-      worker.division(4, 2)
-      worker.call('subtract', 3, 2)
+
+      const mathsWorker = new WebWorker(mathematics)
+
+      mathsWorker.add(1, 2)
+
+      mathsWorker.subtract(4, 2)
+
+      mathsWorker.call('division', 6, 3)
     </script>
   </body>
 </html>
