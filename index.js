@@ -3,12 +3,49 @@ function WebWorker (script, options) {
   if (!script) {
     throw new Error('The script is required in `new WebWorker()`')
   }
+  this._exports = []
   this._message = this._options.message || null
   this._script = script
-  this._code = this._script.toString()
-  const blob = new Blob(['(' + this._code + ')()'])
+  this._code = insideFunction(this._script.toString())
+  this._listen = insideFunction(internalSetup.toString())
+  const namespace = {}
+  let method = null
+  this._code.replace(/^(\s*)\s+((?:async\s*)?function(?:\s*\*)?|const|let|var)(\s+)([a-zA-Z$_][a-zA-Z0-9$_]*)/mg, (o) => {
+    method = o.trim().split(' ')[1]
+    this._exports.push(method)
+    namespace[method] = method
+  })
+  this._code = `(function () {\nvar namespace = ${JSON.stringify(namespace)};\n${this._code}\n${this._listen}})()`
+  const blob = new Blob([this._code])
   this._url = URL.createObjectURL(blob)
   this._worker = new Worker(this._url)
+  methodsSetup(this._worker, this._exports)
+}
+
+function insideFunction (s) {
+  return s.slice(s.indexOf('{') + 1, s.lastIndexOf('}'))
+}
+
+function internalSetup () {
+  this.onmessage = ({ data }) => {
+    if (data.type === 'CALL') {
+      eval(data.method).apply(null, data.args) // remove eval
+    }
+  }
+}
+
+function methodCall (context, method, args) {
+  context.postMessage({
+    type: 'CALL',
+    method: method,
+    args: args
+  })
+}
+
+function methodsSetup (context, fxns) {
+  for (let f = 0; f < fxns.length; f++) {
+    WebWorker.prototype[fxns[f]] = (...args) => methodCall(context, fxns[f], args)
+  }
 }
 
 WebWorker.prototype.send = function (message) {
@@ -37,6 +74,14 @@ WebWorker.prototype.message = function (message) {
 
 WebWorker.prototype.postMessage = function (message) {
   this._worker.postMessage(message || this._message)
+}
+
+WebWorker.prototype.call = function (method, ...args) {
+  this._worker.postMessage({
+    type: 'CALL',
+    method: method,
+    args: args
+  })
 }
 
 export default WebWorker

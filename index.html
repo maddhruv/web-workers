@@ -4,20 +4,21 @@
     <script src="./dist.js"></script>
     <script>
       const fxn = function () {
-        console.log('Inside the Worker')
-        onmessage = (e) => console.log(e)
+        console.log('inside the worker')
+        function add (a, b) {
+          console.log('add', a+b)
+        }
+        const subtract = (a, b) => {
+          console.log('sub', a-b)
+        }
+        let division = function (a, b) {
+          console.log('div', a/b)
+        }
       }
       const worker = new WebWorker(fxn)
-      worker.message('Hello')
-      worker.append(' World')
-      worker.clearMessage()
-      worker.message('Hey')
-      worker.postMessage()
-      worker.send('Bravo')
-      const msgWorker = new WebWorker(fxn, {
-        message: 'Default Message'
-      })
-      msgWorker.postMessage()
+      worker.add(1, 2)
+      worker.division(4, 2)
+      worker.call('subtract', 3, 2)
     </script>
   </body>
 </html>
