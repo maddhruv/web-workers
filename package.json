@@ -1,6 +1,6 @@
 {
   "name": "web-workers",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Web Workers Kit",
   "main": "dist.js",
   "scripts": {
