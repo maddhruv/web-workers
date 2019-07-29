@@ -38,7 +38,7 @@ const mathematics = () => {
 
 const mathsWorker = new WebWorker(mathematics)
 
-mathsWorker.add(1, 2) // 3
+mathsWorker.add(1, 2).then(result => console.log(result))
 
 mathsWorker.subtract(4, 2) // 2
 
