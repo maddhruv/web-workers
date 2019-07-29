@@ -29,22 +29,32 @@ function insideFunction (s) {
 function internalSetup () {
   this.onmessage = ({ data }) => {
     if (data.type === 'CALL') {
-      eval(data.method).apply(null, data.args) // remove eval
+      this.postMessage({
+        type: 'CALL_RETURN',
+        result: eval(data.method).apply(null, data.args) // remove eval
+      })
     }
   }
 }
 
-function methodCall (context, method, args) {
+function methodCall (context, method, args, r) {
   context.postMessage({
     type: 'CALL',
     method: method,
     args: args
   })
+  context.addEventListener('message', ({ data }) => {
+    if (data.type === 'CALL_RETURN') {
+      r(data.result)
+    }
+  })
 }
 
 function methodsSetup (context, fxns) {
   for (let f = 0; f < fxns.length; f++) {
-    WebWorker.prototype[fxns[f]] = (...args) => methodCall(context, fxns[f], args)
+    WebWorker.prototype[fxns[f]] = (...args) => new Promise((resolve, reject) => {
+      methodCall(context, fxns[f], args, resolve)
+    })
   }
 }
 
