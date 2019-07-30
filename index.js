@@ -1,4 +1,5 @@
 const inbuiltMethods = ['send', 'clearMessage', 'append', 'message', 'postMessage', 'call']
+const api = ['ondata']
 
 function WebWorker (script, options) {
   this._options = options || {}
@@ -15,8 +16,8 @@ function WebWorker (script, options) {
   this._code.replace(/^(\s*)\s+((?:async\s*)?function(?:\s*\*)?|const|let|var)(\s+)([a-zA-Z$_][a-zA-Z0-9$_]*)/mg, (o) => {
     const occurence = o.trim().split(' ')
     method = occurence[occurence.length - 1]
-    if (inbuiltMethods.includes(method)) {
-      throw new Error(`${method} is an in-built function, please rename it to something else`)
+    if (inbuiltMethods.includes(method) || api.includes(method)) {
+      throw new Error(`${method} is an in-built function/api, please rename it to something else`)
     }
     this._exports.push(method)
     namespace[method] = method
@@ -45,6 +46,8 @@ function internalSetup () {
             })
           }
         })
+    } else {
+      eval('ondata').call(this, data)
     }
   }
 }
@@ -85,11 +88,15 @@ WebWorker.prototype.clearMessage = function () {
 
 WebWorker.prototype.append = function (message) {
   if (typeof message !== typeof this._message) {
-    throw new Error(`Cant't append ${typeof message} message with ${typeof this._message} messagea already created. Use \`worker.clearMessage()\` `)
+    throw new Error(`Can't append ${typeof message} message with ${typeof this._message} message already created. Use \`worker.clearMessage()\` `)
   }
-  // TODO append for all the data type - Object(assign), Arrray(concat)
-  // working for string and numbers
-  this._message += message
+  if (Array.isArray(message)) {
+    this._message = this._message.concat(message)
+  } else if (typeof message === 'object') {
+    this._message = Object.assign({}, this._message, message)
+  } else {
+    this._message += message
+  }
 }
 
 WebWorker.prototype.message = function (message) {
