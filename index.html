@@ -3,8 +3,8 @@
   <body>
     <script src="./dist.js"></script>
     <script>
-      const mathematics = () => {
-        async function add () {
+      const lunar = () => {
+        async function get () {
           const res = await fetch('https://jsonplaceholder.typicode.com/todos/1')
           return res.json()
         }
@@ -18,13 +18,13 @@
         }
       }
 
-      const mathsWorker = WebWorker(mathematics)
+      const lunarMission = WebWorker(lunar)
 
-      mathsWorker.add().then(d => console.log(d))
+      lunarMission.get().then(d => console.log(d))
 
-      mathsWorker.subtract(4, 2)
+      lunarMission.subtract(4, 2)
 
-      mathsWorker.call('division', 6, 3)
+      lunarMission.call('division', 6, 3)
     </script>
   </body>
 </html>

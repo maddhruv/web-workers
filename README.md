@@ -14,33 +14,34 @@ or
 CDN -
 
 ```js
-<script src="https://unpkg.com/web-workers@0.4.0/dist.js"></script>
+<script src="https://unpkg.com/web-workers@0.6.0/dist.js"></script>
 ```
 
 ## Usage
 
 ```js
-const WebWorkers = require('web-worker')
+const WebWorkers = require('web-workers')
 
-const mathematics = () => {
-  function add (a, b) {
-    console.log(a+b)
-  }
-
-  const subtract = (a, b) => {
-    console.log(a-b)
-  }
-
-  const division = function (a, b) {
-    console.log(a/b)
-  }
+const lunar = () => {
+async function get () {
+  const res = await fetch('https://jsonplaceholder.typicode.com/todos/1')
+  return res.json()
 }
 
-const mathsWorker = WebWorker(mathematics)
+const subtract = (a, b) => {
+  console.log(a-b)
+}
 
-mathsWorker.add(1, 2).then(result => console.log(result))
+const division = function (a, b) {
+  console.log(a/b)
+}
+}
 
-mathsWorker.subtract(4, 2)
+const lunarMission = WebWorker(lunar)
 
-mathsWorker.call('division', 6, 3)
+lunarMission.get().then(d => console.log(d))
+
+lunarMission.subtract(4, 2)
+
+lunarMission.call('division', 6, 3)
 ```
