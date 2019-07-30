@@ -4,8 +4,9 @@
     <script src="./dist.js"></script>
     <script>
       const mathematics = () => {
-        function add (a, b) {
-          return a+b
+        async function add () {
+          const res = await fetch('https://jsonplaceholder.typicode.com/todos/1')
+          return res.json()
         }
 
         const subtract = (a, b) => {
@@ -17,9 +18,9 @@
         }
       }
 
-      const mathsWorker = new WebWorker(mathematics)
+      const mathsWorker = WebWorker(mathematics)
 
-      mathsWorker.add(1, 2).then(d => console.log(d))
+      mathsWorker.add().then(d => console.log(d))
 
       mathsWorker.subtract(4, 2)
 

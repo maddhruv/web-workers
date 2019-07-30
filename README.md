@@ -36,11 +36,11 @@ const mathematics = () => {
   }
 }
 
-const mathsWorker = new WebWorker(mathematics)
+const mathsWorker = WebWorker(mathematics)
 
 mathsWorker.add(1, 2).then(result => console.log(result))
 
-mathsWorker.subtract(4, 2) // 2
+mathsWorker.subtract(4, 2)
 
-mathsWorker.call('division', 6, 3) // 2
+mathsWorker.call('division', 6, 3)
 ```

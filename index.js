@@ -11,7 +11,8 @@ function WebWorker (script, options) {
   const namespace = {}
   let method = null
   this._code.replace(/^(\s*)\s+((?:async\s*)?function(?:\s*\*)?|const|let|var)(\s+)([a-zA-Z$_][a-zA-Z0-9$_]*)/mg, (o) => {
-    method = o.trim().split(' ')[1]
+    const occurence = o.trim().split(' ')
+    method = occurence[occurence.length - 1]
     this._exports.push(method)
     namespace[method] = method
   })
@@ -29,10 +30,16 @@ function insideFunction (s) {
 function internalSetup () {
   this.onmessage = ({ data }) => {
     if (data.type === 'CALL') {
-      this.postMessage({
-        type: 'CALL_RETURN',
-        result: eval(data.method).apply(null, data.args) // remove eval
-      })
+      Promise.resolve()
+        .then(() => eval(data.method).apply(null, data.args))
+        .then(result => {
+          if (result) {
+            this.postMessage({
+              type: 'CALL_RETURN',
+              result: result
+            })
+          }
+        })
     }
   }
 }
@@ -45,7 +52,9 @@ function methodCall (context, method, args, r) {
   })
   context.addEventListener('message', ({ data }) => {
     if (data.type === 'CALL_RETURN') {
-      r(data.result)
+      Promise.resolve()
+        .then(() => data.result)
+        .then(result => r(result))
     }
   })
 }
@@ -94,4 +103,6 @@ WebWorker.prototype.call = function (method, ...args) {
   })
 }
 
-export default WebWorker
+export default (worker) => {
+  return new WebWorker(worker)
+}
