@@ -1,3 +1,5 @@
+const inbuiltMethods = ['send', 'clearMessage', 'append', 'message', 'postMessage', 'call']
+
 function WebWorker (script, options) {
   this._options = options || {}
   if (!script) {
@@ -13,6 +15,9 @@ function WebWorker (script, options) {
   this._code.replace(/^(\s*)\s+((?:async\s*)?function(?:\s*\*)?|const|let|var)(\s+)([a-zA-Z$_][a-zA-Z0-9$_]*)/mg, (o) => {
     const occurence = o.trim().split(' ')
     method = occurence[occurence.length - 1]
+    if (inbuiltMethods.includes(method)) {
+      throw new Error(`${method} is an in-built function, please rename it to something else`)
+    }
     this._exports.push(method)
     namespace[method] = method
   })
