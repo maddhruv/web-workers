@@ -119,6 +119,10 @@ WebWorker.prototype.getMessage = function () {
   return this._message
 }
 
+WebWorker.prototype.kill = function () {
+  this._worker.terminate()
+}
+
 export default (worker) => {
   return new WebWorker(worker)
 }

@@ -53,6 +53,9 @@
       lunarMission.postMessage()
 
       console.log(lunarMission.getMessage())
+
+      setTimeout(() => lunarMission.kill(), 1000)
+      
     </script>
   </body>
 </html>
