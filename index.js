@@ -115,6 +115,10 @@ WebWorker.prototype.call = function (method, ...args) {
   })
 }
 
+WebWorker.prototype.getMessage = function () {
+  return this._message
+}
+
 export default (worker) => {
   return new WebWorker(worker)
 }
