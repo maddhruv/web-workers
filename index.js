@@ -123,6 +123,6 @@ WebWorker.prototype.kill = function () {
   this._worker.terminate()
 }
 
-export default (worker) => {
-  return new WebWorker(worker)
+export default (script, options) => {
+  return new WebWorker(script, options)
 }

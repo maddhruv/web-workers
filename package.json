@@ -2,10 +2,12 @@
   "name": "web-workers",
   "version": "0.7.0",
   "description": "Web Workers Kit",
-  "main": "dist.js",
+  "main": "dist/umd/index.js",
+  "modules": "dist/esm/index.js",
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "watch": "rollup index.js --file dist.js --format iife --name 'WebWorker' --watch",
+    "prepublishOnly": "npm-audit-ok && package-ok",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +22,7 @@
   },
   "homepage": "https://github.com/maddhruv/web-workers#readme",
   "devDependencies": {
+    "prepublish-ok": "^0.2.1",
     "rollup": "^1.17.0",
     "rollup-plugin-analyzer": "^3.1.2",
     "rollup-plugin-babel-minify": "^9.0.0",
