@@ -149,13 +149,3 @@ worker.ondata((data) => {
   console.log(data)
 })
 ```
-
-### `ondata`
-
-
-
-```js
-ondata = (data) => {
-  console.log(data)
-}
-```
