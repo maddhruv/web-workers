@@ -75,10 +75,6 @@ function methodsSetup (context, fxns) {
   }
 }
 
-WebWorker.prototype.clearMessage = function () {
-  this._message = null
-}
-
 WebWorker.prototype.append = function (message) {
   if (typeof message !== typeof this._message) {
     throw new Error(`Can't append ${typeof message} message with ${typeof this._message} message already created. Use \`worker.clearMessage()\` `)
