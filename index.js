@@ -75,13 +75,6 @@ function methodsSetup (context, fxns) {
   }
 }
 
-WebWorker.prototype.send = function (message) {
-  if (message && typeof message !== 'string') {
-    throw new Error(`Can't send ${typeof message} with this method. Rather use the \`worker.json()\` method`)
-  }
-  this.postMessage(message)
-}
-
 WebWorker.prototype.clearMessage = function () {
   this._message = null
 }
