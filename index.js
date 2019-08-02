@@ -4,7 +4,7 @@ const api = ['ondata']
 function WebWorker (script, options) {
   this._options = options || {}
   if (!script) {
-    throw new Error('The script is required in `new WebWorker()`')
+    throw new Error('The script is required in `WebWorker()`')
   }
   this._exports = []
   this._message = this._options.message || null
@@ -121,6 +121,10 @@ WebWorker.prototype.getMessage = function () {
 
 WebWorker.prototype.kill = function () {
   this._worker.terminate()
+}
+
+WebWorker.prototype.onerror = function (cb) {
+  this._worker.addEventListener('error', cb)
 }
 
 export default (script, options) => {
