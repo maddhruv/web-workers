@@ -1,5 +1,4 @@
-const inbuiltMethods = ['send', 'clearMessage', 'append', 'message', 'postMessage', 'call']
-const api = ['ondata']
+const inbuiltMethods = ['append', 'message', 'postMessage', 'call', 'onerror', 'kill', 'getMessage', 'ondata']
 
 function WebWorker (script, options) {
   this._options = options || {}
@@ -16,7 +15,7 @@ function WebWorker (script, options) {
   this._code.replace(/^(\s*)\s+((?:async\s*)?function(?:\s*\*)?|const|let|var)(\s+)([a-zA-Z$_][a-zA-Z0-9$_]*)/mg, (o) => {
     const occurence = o.trim().split(' ')
     method = occurence[occurence.length - 1]
-    if (inbuiltMethods.includes(method) || api.includes(method)) {
+    if (inbuiltMethods.includes(method)) {
       throw new Error(`${method} is an in-built function/api, please rename it to something else`)
     }
     this._exports.push(method)
